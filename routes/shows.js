@@ -11,6 +11,31 @@ routershows.use(express.json());
 
 const { check, validationResult } = require("express-validator");
 
+routershows.post('/',
+[
+    check("title").trim().isLength({ max: 25 }).withMessage('It should be within 25 characters')
+    
+],
+  
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // Return errors if validation fails
+      return res.status(400).json({ error: errors.array() });
+    }
+
+    try {
+      const { title, genre, rating, available } = req.body;
+      const newShow = await Show.create({ title, genre, rating, available });
+      res.status(201).json(newShow);
+    } catch (error) {
+      res.status(400).json({ error: 'Unable to create Show', details: error.message });
+    }
+  }
+);
+
+
+
 routershows.get('/', async (req, res) => {
     try {
       const shows = await Show.findAll();

@@ -10,10 +10,10 @@ const { check, validationResult } = require("express-validator");
 The title of a show must be a maximum of 25 characters
 The username must be an email address hint*/
 
-/*router.post('/',
+router.post('/',
 [
     check("username").trim().notEmpty().withMessage('UserName is required and cannot be empty or whitespace'),
-    check('password').trim().notEmpty().withMessage('Password is required and cannot be empty or whitespace')
+    check('username').trim().isEmail().withMessage('It should be an email address')
 ],
   
   async (req, res) => {
@@ -28,10 +28,10 @@ The username must be an email address hint*/
       const newUser = await User.create({ username, password });
       res.status(201).json(newUser);
     } catch (error) {
-      res.status(400).json({ error: 'Unable to create restaurant', details: error.message });
+      res.status(400).json({ error: 'Unable to create User', details: error.message });
     }
   }
-);*/
+);
 
   router.get('/', async (req, res) => {
     try {

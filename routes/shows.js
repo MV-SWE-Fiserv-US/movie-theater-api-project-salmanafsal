@@ -20,7 +20,7 @@ routershows.get('/', async (req, res) => {
     }
   });
 
-  routershows.get('/gen', async (req, res) => {
+  routershows.get('/genre', async (req, res) => {
     /*return res.status(400).json({ message: 'Genre is not present' });*/
     console.log(req.query);
     console.log("req.query:", req.query); // Should log an object like { genre: 'comedy' }
@@ -52,6 +52,7 @@ routershows.get('/', async (req, res) => {
 });
 
 
+
   routershows.get('/:id', async (req, res) => {
     try {
       const newshow = await Show.findByPk(req.params.id);
@@ -62,7 +63,8 @@ routershows.get('/', async (req, res) => {
     }
   });
 
-  routershows.get('/shows/:id', async (req, res) => {
+  routershows.get('/:id/users', async (req, res) => {
+    /*console.log(req.params);*/
     try {
       const newshow = await Show.findByPk(req.params.id, {
 
@@ -81,6 +83,7 @@ routershows.get('/', async (req, res) => {
       res.status(500).json({ error: 'Unable to fetch user', details: error.message });
     }
   });
+  
 
   routershows.put('/:id/available', async (req, res) => {
     try {

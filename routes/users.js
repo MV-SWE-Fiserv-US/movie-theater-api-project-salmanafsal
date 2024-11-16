@@ -5,6 +5,10 @@ router.use(express.json());
 
 const { check, validationResult } = require("express-validator");
 
+/*Use server-side validation in your routes to ensure that:
+
+The title of a show must be a maximum of 25 characters
+The username must be an email address hint*/
 
 /*router.post('/',
 [
@@ -49,7 +53,7 @@ const { check, validationResult } = require("express-validator");
   });
 
 
-  router.get('/shows/:id', async (req, res) => {
+  router.get('/:id/shows', async (req, res) => {
     try {
       const newuser = await User.findByPk(req.params.id, {
 
@@ -71,7 +75,7 @@ const { check, validationResult } = require("express-validator");
 
 
 
-  router.put('/userid/:uid/shows/:sid', async (req, res) => {
+  router.put('/:uid/shows/:sid', async (req, res) => {
     const { uid, sid } = req.params;
 
     try {
@@ -92,4 +96,9 @@ const { check, validationResult } = require("express-validator");
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+
+
+
+
   module.exports = router;

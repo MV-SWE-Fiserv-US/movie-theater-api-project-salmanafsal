@@ -20,6 +20,38 @@ routershows.get('/', async (req, res) => {
     }
   });
 
+  routershows.get('/gen', async (req, res) => {
+    /*return res.status(400).json({ message: 'Genre is not present' });*/
+    console.log(req.query);
+    console.log("req.query:", req.query); // Should log an object like { genre: 'comedy' }
+     
+    const { genre } = req.query; // Get the genre from the query parameter
+    console.log("genre:", genre); 
+    console.log({genre})
+    if (!req.query || Object.keys(req.query).length === 0) {
+        return res.status(400).json({ error: 'Query parameters are missing' });
+    }
+    try {
+        if (!genre) {
+            return res.status(400).json({ "value": req.query });
+        }
+
+        // Fetch shows with the specified genre
+        const shows = await Show.findAll({
+            where: { genre: genre }, // Filter by genre
+        });
+
+
+        res.status(200).json(shows);
+    } catch (error) {
+        console.error(error);
+        res.json(req.query);
+        res.status(500).json({ message: 'Issue with displaying show' });
+        
+    }
+});
+
+
   routershows.get('/:id', async (req, res) => {
     try {
       const newshow = await Show.findByPk(req.params.id);
@@ -76,29 +108,7 @@ routershows.get('/', async (req, res) => {
     }
   });
 
-  routershows.get('/genrebasedshows', async (req, res) => {
-    console.log(req.query);
-    const { genre } = req.query; // Get the genre from the query parameter
-    console.log({genre})
-    try {
-        if (!genre) {
-            return res.status(400).json({ message: 'Genre is not present' });
-        }
-
-        // Fetch shows with the specified genre
-        const shows = await Show.findAll({
-            where: { genre }, // Filter by genre
-        });
-
-
-        res.status(200).json(shows);
-    } catch (error) {
-        console.error(error);
-        res.json(req.query);
-        res.status(500).json({ message: 'Issue with displaying show' });
-        
-    }
-});
+  
 
 
 module.exports = routershows;
